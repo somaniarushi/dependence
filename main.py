@@ -5,12 +5,15 @@ from lexer import Lexer
 from parsers import Parser
 from interpreter import Interpreter
 
-def getEdges(text):
-    lexer = Lexer(text)
+def getEdges(mappings):
+    edges = []
 
-    return [(1, 2), (1, 6), (2, 3), (2, 4),
-         (2, 6), (3, 4), (3, 5), (4, 8),
-         (4, 9), (6, 7)]
+    for key in mappings:
+        values = mappings[key]
+        for value in values:
+            edges.append((key, value))
+
+    return edges
 
 
 def main():
@@ -22,14 +25,14 @@ def main():
     parser = Parser(lexer)
     interpreter = Interpreter(parser)
     result = interpreter.interpret()
-    print(interpreter.GLOBAL_SCOPE)
 
-    # edges = getEdges(text)
+    edges = getEdges(interpreter.mapping)
+    print(edges)
 
-    # G = nx.Graph()
-    # G.add_edges_from(edges)
-    # nx.draw_networkx(G, with_labels = True)
-    # plt.show()
+    G = nx.Graph()
+    G.add_directed_edges_from(edges)
+    nx.draw_networkx(G, with_labels = True)
+    plt.show()
 
 if __name__ == '__main__':
     main()

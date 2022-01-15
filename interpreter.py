@@ -14,6 +14,7 @@ class Interpreter(NodeVisitor):
     def __init__(self, parser):
         self.parser = parser
         self.GLOBAL_SCOPE = {}
+        self.mapping = {}
 
     def interpret(self):
         tree = self.parser.parse()
@@ -32,6 +33,11 @@ class Interpreter(NodeVisitor):
     def visit_Assign(self, node):
         var_name = node.left.value
         self.GLOBAL_SCOPE[var_name] = self.visit(node.right)
+        if node.right.token.type == ID:
+            if var_name in self.mapping:
+                self.mapping[var_name].append(node.right.value)
+            else:
+                self.mapping[var_name] = [node.right.value]
 
     def visit_Var(self, node):
         var_name = node.value
