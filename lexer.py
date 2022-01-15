@@ -112,6 +112,13 @@ class Lexer:
                 self.advance()
                 return Token(ASSIGN, '=')
 
+            elif self.current_char.isdigit():
+                return self.number()
+
+            elif self.current_char == ';':
+                self.advance()
+                return Token(SEMI, ';')
+
             else:
                 self.error()
 

@@ -1,5 +1,6 @@
 ?start: program
-program: BEGIN statements END
+program: statements
 statements: statement | statement SEMI statements
-statmement: var ASSIGN expr (var | NUMBER)
+statmement: var ASSIGN factor
+factor: var | NUMBER
 var: ID
