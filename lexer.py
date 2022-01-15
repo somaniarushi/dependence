@@ -112,12 +112,36 @@ class Lexer:
                 self.advance()
                 return Token(ASSIGN, '=')
 
+            # integer value
             elif self.current_char.isdigit():
                 return self.number()
 
+            # semi-colon
             elif self.current_char == ';':
                 self.advance()
                 return Token(SEMI, ';')
+
+            # plus
+            elif current_char == '+':
+                token = Token(PLUS, '+')
+                self.advance()
+                return token
+
+            # minus
+            elif current_char == '-':
+                token = Token(MINUS, '-')
+                self.advance()
+                return token
+
+            # multiply
+            elif self.current_char == '*':
+                self.advance()
+                return Token(MUL, '*')
+
+            # float division
+            elif self.current_char == '/':
+                self.advance()
+                return Token(DIV, '/')
 
             else:
                 self.error()

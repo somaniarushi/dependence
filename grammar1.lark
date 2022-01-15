@@ -1,6 +1,12 @@
 ?start: program
 program: statements
 statements: statement | statement SEMI statements
-statmement: var ASSIGN factor
-factor: var | NUMBER
-var: ID
+statmement: variable ASSIGN expr
+
+expr: term ((PLUS | MINUS)  term)*
+term: factor ((MUL | DIV) factor)*
+factor PLUS factor
+        | MINUS factor
+        | INTEGER
+        | variable
+variable: ID

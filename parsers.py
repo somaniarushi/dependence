@@ -25,6 +25,12 @@ class Assign(AST):
         self.type = self.op = op
         self.right = right
 
+class BinOp(AST):
+    def __init__(self, left, op, right):
+        self.left = left
+        self.token = self.op = op
+        self.right = right
+
 class Program(AST):
     def __init__(self, statements):
         self.statements = statements
@@ -95,7 +101,7 @@ class Parser:
         if self.current_token.type == ID:
             return self.assignment_statement()
         else:
-            return self.error()
+            return self.empty()
 
     def assignment_statement(self):
         '''
@@ -104,7 +110,7 @@ class Parser:
         left = self.variable()
         token = self.current_token
         self.eat(ASSIGN)
-        right = self.factor()
+        right = self.expr()
         return Assign(left, token, right)
 
     def variable(self):
@@ -121,19 +127,50 @@ class Parser:
         '''
         return NoOp()
 
+    def expr(self):
+        '''
+        Parses the text and returns the expression.
+
+        expr: term ((PLUS | MINUS) term)*
+        '''
+        node = self.term()
+        while self.current_token.type in (PLUS, MINUS):
+            token = self.current_token
+            if token.type == PLUS:
+                self.eat(PLUS)
+            elif token.type == MINUS:
+                self.eat(MINUS)
+            node = BinOp(left=node, op=token, right=self.term())
+        return node
+
+    def term(self):
+        '''
+        Returns the AST term starting at current_token and eats values as necessary
+
+        term: factor ((MUL | DIV) factor)*
+        '''
+        node = self.factor()
+        while self.current_token.type in (MUL, DIV):
+            token = self.current_token
+            if token.type == MUL:
+                self.eat(MUL)
+            elif token.type == DIV:
+                self.eat(DIV)
+            node = BinOp(left=node, op=token, right=self.factor())
+        return node
+
     def factor(self):
         '''
         Returns the factor AST that is current_token and
         eats the current_token
 
-        factor : +/- factor | INTEGER | ( expr ) | variable
+        factor : INTEGER | variable
         '''
         token = self.current_token
 
         if token.type == INTEGER:
             self.eat(INTEGER)
             return Num(token)
-
         else:
             node = self.variable()
             return node

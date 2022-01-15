@@ -29,8 +29,8 @@ def main():
     edges = getEdges(interpreter.mapping)
     print(edges)
 
-    G = nx.Graph()
-    G.add_directed_edges_from(edges)
+    G = nx.DiGraph()
+    G.add_edges_from(edges)
     nx.draw_networkx(G, with_labels = True)
     plt.show()
 
