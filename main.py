@@ -18,8 +18,7 @@ def getEdges(mappings):
 
 def main():
     import sys
-    # text = open(sys.argv[1], 'r').read()
-    text = open('inputs/input1.txt', 'r').read()
+    text = open(sys.argv[1], 'r').read()
 
     lexer = Lexer(text)
     parser = Parser(lexer)
