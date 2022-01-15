@@ -2,7 +2,9 @@
 
 Accepts a series of assignment statements, generates and visualizes the dependency between the variables from the code. This is a personal learning tool to understand how the "greying out variables" feature in many IDEs like VSCode or Atom works.
 
-![Representation of input2.txt Graph](static/demo.png)
+<p align="center">
+<img src="static/demo.png" width="400px" alt="Representation of a Generated Graph"/>
+</p>
 
 ## Requirements and Setup
 - Python 3.8+
