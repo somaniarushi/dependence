@@ -1,0 +1,5 @@
+?start: program
+program: BEGIN statements END
+statements: statement | statement SEMI statements
+statmement: var ASSIGN expr (var | NUMBER)
+var: ID
